@@ -3,16 +3,20 @@ const express = require("express");
 const app = express();
 const bodyparser = require("body-parser");
 
+
 //local packages
 const userRoutes = require("./Routes/userRoutes");
 const db = require("./db");
 
 //Routes
-app.use("/api/users", userRoutes);
 app.use(bodyparser.json());
+app.use("/api/users", userRoutes);
+
+
+
 //Home page
 app.get("/home", (req, res) => {
-  res.send("hi this  is home page");
+  res.send("./index");
 });
 
 const port = 3000;

@@ -1,12 +1,11 @@
 //global packages
 const express = require("express");
 const router = express.Router();
-const { default: mongoose } = require("mongoose");
-const bodyparser = require("body-parser");
+const mongoose = require("mongoose");
 
 //local packages
 const User = require("../model/usermodel");
-const { isValidData } = require("../middelware/middelware");
+const { isValidData, checkUser } = require("../middelware/middelware");
 const port = 3000;
 
 router.get("/", (req, res) => {
@@ -30,9 +29,11 @@ router.get("/:id", isValidData, (req, res) => {
     .catch((err) => console.log(err));
 });
 
-router.post("/", (req, res) => {
-  console.log(req.body);
-  res.send("Create a new record");
+router.post("/", checkUser, (req, res) => {
+  // console.log(req.body);
+  User.create(req.body)
+    .then((data) => res.send(data))
+    .catch((err) => console.log(err));
 });
 
 router.put("/:id", (req, res) => {
